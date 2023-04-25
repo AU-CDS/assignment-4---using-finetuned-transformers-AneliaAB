@@ -59,9 +59,9 @@ save_emotion_df()
 #creating plot with matplotlib
 titles, anger, disgust, fear, joy, neutral, sadness, surprise = emotion_classification()
 
+#function for finding average number of a list 
 def average(lst):
     return sum(lst) / len(lst)
-
 
 plt.style.use('_mpl-gallery')
 
@@ -84,6 +84,5 @@ fig, ax = plt.subplots()
 plt.barh(x, y, edgecolor="white", linewidth=0.7, align='center')
 plt.title('Average score of each emotion (all headlines)')
 
-plt.show()
 #saving plot
 plt.savefig('../out/average.png')
