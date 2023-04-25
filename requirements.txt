@@ -1,2 +1,3 @@
 pandas
 transformers[tf-cpu]
+matplotlib

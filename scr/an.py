@@ -1,6 +1,7 @@
 import os
 from transformers import pipeline
 import pandas as pd
+import matplotlib.pyplot as plt
 
 #function that loads the classifier 
 def define_classifier():
@@ -54,3 +55,35 @@ def save_emotion_df():
     df.to_csv(data_filepath)
 
 save_emotion_df()
+
+#creating plot with matplotlib
+titles, anger, disgust, fear, joy, neutral, sadness, surprise = emotion_classification()
+
+def average(lst):
+    return sum(lst) / len(lst)
+
+
+plt.style.use('_mpl-gallery')
+
+#x axis
+x = ("anger", "disgust", "fear", "joy", "neutral", "sadness", "surprise")
+#finding the average of each emotion via average() function 
+avr_anger = average(anger)
+avr_disgust = average(disgust)
+avr_fear = average(fear)
+avr_joy = average(joy)
+avr_neutral = average(neutral)
+avr_sadness = average(sadness)
+avr_surprise = average(surprise)
+
+#y axis
+y = avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise
+
+#create plot
+fig, ax = plt.subplots()
+plt.barh(x, y, edgecolor="white", linewidth=0.7, align='center')
+plt.title('Average score of each emotion (all headlines)')
+
+plt.show()
+#saving plot
+plt.savefig('../out/average.png')
