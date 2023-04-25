@@ -56,9 +56,6 @@ def save_emotion_df():
 
 save_emotion_df()
 
-#creating plot with matplotlib
-titles, anger, disgust, fear, joy, neutral, sadness, surprise = emotion_classification()
-
 #function for finding average number of a list 
 def average(lst):
     return sum(lst) / len(lst)
@@ -66,23 +63,33 @@ def average(lst):
 plt.style.use('_mpl-gallery')
 
 #x axis
-x = ("anger", "disgust", "fear", "joy", "neutral", "sadness", "surprise")
-#finding the average of each emotion via average() function 
-avr_anger = average(anger)
-avr_disgust = average(disgust)
-avr_fear = average(fear)
-avr_joy = average(joy)
-avr_neutral = average(neutral)
-avr_sadness = average(sadness)
-avr_surprise = average(surprise)
+def find_average():
+    titles, anger, disgust, fear, joy, neutral, sadness, surprise = emotion_classification()
+    x = ("anger", "disgust", "fear", "joy", "neutral", "sadness", "surprise")
+    #finding the average of each emotion via average() function 
+    avr_anger = average(anger)
+    avr_disgust = average(disgust)
+    avr_fear = average(fear)
+    avr_joy = average(joy)
+    avr_neutral = average(neutral)
+    avr_sadness = average(sadness)
+    avr_surprise = average(surprise)
 
-#y axis
-y = avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise
+    return avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise
 
-#create plot
-fig, ax = plt.subplots()
-plt.barh(x, y, edgecolor="white", linewidth=0.7, align='center')
-plt.title('Average score of each emotion (all headlines)')
+def create_barplot():
+    avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise = find_average()
+    #saving average values in y variable
+    y = avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise
 
-#saving plot
-plt.savefig('../out/average.png')
+    #create plot
+    fig, ax = plt.subplots()
+    plt.barh(x, y, edgecolor="white", linewidth=0.7, align='center')
+    plt.title('Average score of each emotion (all headlines)')
+
+    #saving plot
+    plt.savefig('../out/average1.png')
+    
+    plt.show()
+
+create_barplot()
