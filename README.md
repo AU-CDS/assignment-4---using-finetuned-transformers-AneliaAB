@@ -39,3 +39,6 @@ The new dataset consists of 6335 rows and 8 columns - headline, anger, disgust, 
 
 - Png 
 The png file shows a bar plot of the average score of each emotion for all headlines. This is done by dividing the sum of the scores with the number of scores. The barplot shows the emotions on the y axis and the average score on the x axis. This helps visualize the overall emotion in all headlines.
+
+## Challenges 
+I struggle with importing tranformers when running the python script ```code.py```, so I created a notebook that runs the same code, which you can find in the ```nb```folder. When rinning the notebook I don't get any error or problem with transformers, and I am working on fixing the issue with the script. 

@@ -81,15 +81,24 @@ def create_barplot():
     avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise = find_average()
     #saving average values in y variable
     y = avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise
+    x = ('anger', 'disgust', 'fear', 'joy', 'neutral', 'sadness', 'surprise')
 
     #create plot
-    fig, ax = plt.subplots()
-    plt.barh(x, y, edgecolor="white", linewidth=0.7, align='center')
-    plt.title('Average score of each emotion (all headlines)')
+    plt.barh(x, y)
 
+    plt.xlabel('Emotion')
+    plt.ylabel('Average')
+    plt.title('Average emotion for all headlines')
+
+    plt.subplots_adjust(left=0.40, bottom=0.40)
     #saving plot
-    plt.savefig('../out/average1.png')
+    plt.savefig('../out/average2.png')
     
     plt.show()
 
 create_barplot()
+
+#visualizing fake and real data 
+def df_fake_barplot():
+    data = load_data("../data/fake_or_real_news.csv")
+    df_fake = data[data['label'] == 'FAKE']
