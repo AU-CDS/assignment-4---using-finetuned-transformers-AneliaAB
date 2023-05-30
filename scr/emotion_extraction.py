@@ -27,7 +27,7 @@ def load_data(keyword): #takes path to the data as argument
         return data_fake
     elif keyword.upper() == "REAL":
         data_real = data[data['label'] == 'REAL']
-        return data_real[:10]
+        return data_real
 
 classifier = define_classifier() #calling classifier function and saving it into variable 'classifier'
 
