@@ -3,7 +3,7 @@
 
 # Assignment 4 - Using finetuned transformers via HuggingFace
 
-## Project Description by Ross
+## DESCRIPTION
 In previous assignments, you've done a lot of model training of various kinds of complexity, such as training document classifiers or RNN language models. This assignment is more like Assignment 1, in that it's about *feature extraction*.
 
 For this assignment, you should use ```HuggingFace``` to extract information from the *Fake or Real News* dataset that we've worked with previously.
