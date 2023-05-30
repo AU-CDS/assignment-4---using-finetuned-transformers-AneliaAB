@@ -18,7 +18,6 @@ def load_data(keyword): #takes path to the data as argument
     filename = os.path.join("..", "data", "fake_or_real_news.csv")
     data = pd.read_csv(filename, index_col=0)
 
-    print("Loading the data..")
     if keyword.upper() == "ALL":
         return data
     elif keyword.upper() == "FAKE":
@@ -55,7 +54,6 @@ def emotion_classification(keyword):
             sadness.append(scores[5]["score"])
             surprise.append(scores[6]["score"])
     
-    print("Extracting emotions..")
     return titles, anger, disgust, fear, joy, neutral, sadness, surprise
 
 #creates a pandas dataframe with scores for all emotions 
