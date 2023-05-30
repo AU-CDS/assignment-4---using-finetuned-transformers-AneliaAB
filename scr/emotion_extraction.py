@@ -1,8 +1,10 @@
+#%%
 import os
 from transformers import pipeline
 import pandas as pd
 import matplotlib.pyplot as plt
 
+#%%
 #function that loads the classifier 
 def define_classifier():
     classifier = pipeline("text-classification", 
@@ -10,19 +12,30 @@ def define_classifier():
                         return_all_scores=True)
     return classifier
 
+#%%
 #function loading the dataframe
-def load_data(filepath): #takes path to the data as argument 
-    filename = os.path.join(filepath)
-
+def load_data(keyword): #takes path to the data as argument 
+    print("loading data")
+    filename = os.path.join("..", "data", "fake_or_real_news.csv")
     data = pd.read_csv(filename, index_col=0)
-    return data
 
-data = load_data("../data/fake_or_real_news.csv")
+    print("Loading the data..")
+    if keyword.upper() == "ALL":
+        return data
+    elif keyword.upper() == "FAKE":
+        data_fake = data[data['label'] == 'FAKE']
+        return data_fake
+    elif keyword.upper() == "REAL":
+        data_real = data[data['label'] == 'REAL']
+        return data_real[:10]
 
 classifier = define_classifier() #calling classifier function and saving it into variable 'classifier'
 
+#%%
 #Perform emotion classification and saving as a pandas dataframe
-def emotion_classification():  
+def emotion_classification(keyword):  
+    print("emotion classification..")
+    data = load_data(keyword)
     titles = data["title"]
 
     anger = []
@@ -44,17 +57,18 @@ def emotion_classification():
             sadness.append(scores[5]["score"])
             surprise.append(scores[6]["score"])
     
+    print("Extracting emotions..")
     return titles, anger, disgust, fear, joy, neutral, sadness, surprise
 
-
-def save_emotion_df():
-    titles, anger, disgust, fear, joy, neutral, sadness, surprise = emotion_classification()
+#
+def save_emotion_df(keyword):
+    titles, anger, disgust, fear, joy, neutral, sadness, surprise = emotion_classification(keyword)
     df = pd.DataFrame(list(zip(titles, anger, disgust, fear, joy, neutral, sadness, surprise)), columns=['headline', 'anger', 'disgust', 'fear', 'joy', 'neutral', 'sadness', 'surprise'])
     
     data_filepath = "../out/data.csv"  # name your output file
     df.to_csv(data_filepath)
 
-save_emotion_df()
+#save_emotion_df()
 
 #function for finding average number of a list 
 def average(lst):
@@ -63,8 +77,9 @@ def average(lst):
 plt.style.use('_mpl-gallery')
 
 #x axis
-def find_average():
-    titles, anger, disgust, fear, joy, neutral, sadness, surprise = emotion_classification()
+def find_average(keyword):
+    print("find avarage..")
+    titles, anger, disgust, fear, joy, neutral, sadness, surprise = emotion_classification(keyword)
     x = ("anger", "disgust", "fear", "joy", "neutral", "sadness", "surprise")
     #finding the average of each emotion via average() function 
     avr_anger = average(anger)
@@ -77,8 +92,11 @@ def find_average():
 
     return avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise
 
-def create_barplot():
-    avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise = find_average()
+#visualizing fake and real data 
+def df_fake_barplot(keyword):
+    print("Creating barplot..")
+
+    avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise = find_average(keyword)
     #saving average values in y variable
     y = avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise
     x = ('anger', 'disgust', 'fear', 'joy', 'neutral', 'sadness', 'surprise')
@@ -88,17 +106,13 @@ def create_barplot():
 
     plt.xlabel('Emotion')
     plt.ylabel('Average')
-    plt.title('Average emotion for all headlines')
+    plt.title(f'Average emotion for {keyword} headlines')
 
     plt.subplots_adjust(left=0.40, bottom=0.40)
     #saving plot
-    plt.savefig('../out/average2.png')
-    
+    plt.savefig(os.path.join(f"../out/avarage_{keyword}.png"))
+
     plt.show()
 
-create_barplot()
-
-#visualizing fake and real data 
-def df_fake_barplot():
-    data = load_data("../data/fake_or_real_news.csv")
-    df_fake = data[data['label'] == 'FAKE']
+keyword = input("Generate outout for all, fake or real news: ")
+df_fake_barplot(keyword)
