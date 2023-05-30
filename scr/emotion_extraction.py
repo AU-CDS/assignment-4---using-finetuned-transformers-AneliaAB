@@ -15,7 +15,6 @@ def define_classifier():
 #%%
 #function loading the dataframe
 def load_data(keyword): #takes path to the data as argument 
-    print("loading data")
     filename = os.path.join("..", "data", "fake_or_real_news.csv")
     data = pd.read_csv(filename, index_col=0)
 
@@ -34,7 +33,6 @@ classifier = define_classifier() #calling classifier function and saving it into
 #%%
 #Perform emotion classification and saving as a pandas dataframe
 def emotion_classification(keyword):  
-    print("emotion classification..")
     data = load_data(keyword)
     titles = data["title"]
 
@@ -60,15 +58,13 @@ def emotion_classification(keyword):
     print("Extracting emotions..")
     return titles, anger, disgust, fear, joy, neutral, sadness, surprise
 
-#
+#creates a pandas dataset with scores for all emotions 
 def save_emotion_df(keyword):
     titles, anger, disgust, fear, joy, neutral, sadness, surprise = emotion_classification(keyword)
     df = pd.DataFrame(list(zip(titles, anger, disgust, fear, joy, neutral, sadness, surprise)), columns=['headline', 'anger', 'disgust', 'fear', 'joy', 'neutral', 'sadness', 'surprise'])
     
-    data_filepath = "../out/data.csv"  # name your output file
+    data_filepath = f"../out/data_{keyword}.csv"  # name your output file
     df.to_csv(data_filepath)
-
-#save_emotion_df()
 
 #function for finding average number of a list 
 def average(lst):
@@ -76,11 +72,10 @@ def average(lst):
 
 plt.style.use('_mpl-gallery')
 
-#x axis
+#calculates avarage score 
 def find_average(keyword):
-    print("find avarage..")
     titles, anger, disgust, fear, joy, neutral, sadness, surprise = emotion_classification(keyword)
-    x = ("anger", "disgust", "fear", "joy", "neutral", "sadness", "surprise")
+
     #finding the average of each emotion via average() function 
     avr_anger = average(anger)
     avr_disgust = average(disgust)
@@ -93,9 +88,7 @@ def find_average(keyword):
     return avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise
 
 #visualizing fake and real data 
-def df_fake_barplot(keyword):
-    print("Creating barplot..")
-
+def emotion_distribution(keyword):
     avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise = find_average(keyword)
     #saving average values in y variable
     y = avr_anger, avr_disgust, avr_fear, avr_joy, avr_neutral, avr_sadness, avr_surprise
@@ -114,5 +107,10 @@ def df_fake_barplot(keyword):
 
     plt.show()
 
-keyword = input("Generate outout for all, fake or real news: ")
-df_fake_barplot(keyword)
+keyword = input("Generate outout based on keyword (all, fake or real): ")
+
+print("Creating barplot showing emotion distribution...")
+emotion_distribution(keyword)
+
+print(f"Creating dataset containing only {keyword}-news data")
+save_emotion_df(keyword)
