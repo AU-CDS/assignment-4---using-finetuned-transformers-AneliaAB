@@ -58,7 +58,7 @@ def emotion_classification(keyword):
     print("Extracting emotions..")
     return titles, anger, disgust, fear, joy, neutral, sadness, surprise
 
-#creates a pandas dataset with scores for all emotions 
+#creates a pandas dataframe with scores for all emotions 
 def save_emotion_df(keyword):
     titles, anger, disgust, fear, joy, neutral, sadness, surprise = emotion_classification(keyword)
     df = pd.DataFrame(list(zip(titles, anger, disgust, fear, joy, neutral, sadness, surprise)), columns=['headline', 'anger', 'disgust', 'fear', 'joy', 'neutral', 'sadness', 'surprise'])
